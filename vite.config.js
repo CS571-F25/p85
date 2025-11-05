@@ -7,4 +7,8 @@ export default defineConfig({
     react(), // Keep your react plugin
     tailwindcss(), // Add the new tailwind plugin
   ],
+  base: "/p85/", // Example base path
+  build:{
+    outDir: "docs" // Example output directory
+  }
 });
