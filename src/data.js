@@ -1,3 +1,4 @@
+/*
 export const CONTENT_DATA = [
   // Movies
   { 
@@ -101,3 +102,4 @@ export const CONTENT_DATA = [
     overview: "Wednesday Addams is sent to Nevermore Academy, a bizarre boarding school where she attempts to master her psychic powers, stop a monstrous killing spree of the town citizens, and solve the supernatural mystery that affected her family 25 years ago — all while navigating her new relationships."
   },
 ];
+*/

@@ -1,14 +1,13 @@
 import React from 'react';
-import { useOutletContext, Link } from 'react-router-dom'; // Added Link
-import { useAuth } from '../context/AuthContext'; // 1. Import Auth Hook
+import { useOutletContext, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import MovieCard from '../components/MovieCard';
-import { CONTENT_DATA } from '../data';
 
 const MyList = () => {
-  const { user } = useAuth(); // 2. Get the current user
-  const { myList, toggleMyList, setSelectedMovie } = useOutletContext();
+  const { user } = useAuth();
+  const { myList, toggleMyList, setSelectedMovie, allContent, loading } = useOutletContext();
 
-  // 3. The "Not Signed In" View
+  // 1. Not Signed In View
   if (!user) {
     return (
       <div className="pt-32 px-6 pb-10 flex flex-col items-center justify-center min-h-[60vh] text-center">
@@ -34,8 +33,10 @@ const MyList = () => {
     );
   }
 
-  // 4. The Standard View (Only runs if user IS logged in)
-  const myMovies = CONTENT_DATA.filter(item => myList.includes(item.id));
+  if (loading) return <div className="text-white pt-32 text-center text-xl">Loading your list...</div>;
+
+  // 2. Filter Global Data to find matches for MyList
+  const myMovies = allContent.filter(item => myList.includes(item.id));
 
   return (
     <div className="pt-24 px-6 pb-10">

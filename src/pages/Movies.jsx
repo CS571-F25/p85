@@ -1,13 +1,14 @@
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 import MovieCard from '../components/MovieCard';
-import { CONTENT_DATA } from '../data';
 
 const Movies = () => {
-  const { searchQuery } = useOutletContext();
+  const { searchQuery, myList, toggleMyList, setSelectedMovie, allContent, loading } = useOutletContext();
 
-  // Filter: Must be a MOVIE and match SEARCH
-  const filteredMovies = CONTENT_DATA.filter(item => 
+  if (loading) return <div className="text-white pt-32 text-center text-xl">Loading movies...</div>;
+
+  // FIX: Filter for 'movie' instead of 'tv'
+  const filteredMovies = allContent.filter(item => 
     item.type === 'movie' && 
     item.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -21,7 +22,14 @@ const Movies = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {filteredMovies.map((movie) => (
-            <MovieCard key={movie.id} title={movie.title} image={movie.image} />
+            <MovieCard 
+              key={movie.id} 
+              title={movie.title} 
+              image={movie.image} 
+              isAdded={myList.includes(movie.id)}
+              onToggle={() => toggleMyList(movie.id)}
+              onClick={() => setSelectedMovie(movie)}
+            />
           ))}
         </div>
       </div>
