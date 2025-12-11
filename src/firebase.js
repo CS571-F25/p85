@@ -1,10 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth"; 
-import { getFirestore } from "firebase/firestore"; // 1. Import Firestore
+import { getAuth } from "firebase/auth";
+import { initializeFirestore, getFirestore } from "firebase/firestore"; 
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAyws5J0n2f2PtWVbGnWMheubWR1z8ZF4Y",
   authDomain: "streamline-6cd2d.firebaseapp.com",
@@ -15,12 +13,19 @@ const firebaseConfig = {
   measurementId: "G-QHP7K7DRV6"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const analytics = getAnalytics(app);
+export const auth = getAuth(app);
 
-// Now this will work because getAuth is imported
-export const auth = getAuth(app); 
-export const db = getFirestore(app);
+// Initialize DB with Long Polling to try and fix network blocks
+let dbInstance;
+try {
+  dbInstance = initializeFirestore(app, {
+    experimentalForceLongPolling: true, 
+  });
+} catch (e) {
+  dbInstance = getFirestore(app);
+}
 
+export const db = dbInstance;
 export default app;
